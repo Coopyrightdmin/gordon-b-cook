@@ -25,12 +25,12 @@ or yarn
 
 ```
 module.exports = {
-  MOVIEDB_TOKEN: '',
+  GOOGLE_API_KEY: '',
   REQUEST_TOKEN: '',
 };
 ```
 
-Create your MovieDB account to get your token (https://developers.themoviedb.org/3)
+Create your GOOGLE_API_KEY : https://developers.google.com/maps/documentation/embed/get-api-key
 
 Complete the Recast.AI `REQUEST_TOKEN` : go to your bot page, click on the settings icon (on the right side of your screen), and copy the `request_token`.
 
