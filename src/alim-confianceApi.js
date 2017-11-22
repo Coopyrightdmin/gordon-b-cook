@@ -1,19 +1,19 @@
 const axios = require('axios');
 const config = require('./config');
 
-function discover(param) {
-  return apiCall(param).then(response =>
+function discover(location, filter, rating) {
+  return apiCall(location, filter).then(response =>
     apiResultToList(response.data.records)
   );
 }
 
-function apiCall(param) {
-  return axios.get(`https://dgal.opendatasoft.com/api/records/1.0/search/`, {
+function apiCall(location, filter) {
+				console.log(filter);
+  return axios.get(`https://dgal.opendatasoft.com/api/records/1.0/search/?refine.filtre=` + filter, {
     params: {
 		dataset: "export_alimconfiance",
-		q: param,
-		rows: 10
-    },
+		q: location
+    }
   });
 }
 
@@ -30,7 +30,7 @@ function apiResultToList(results) {
     ];
   }
 
-  const cards = results.slice(0,10).map(e => ({
+  const cards = results.slice().map(e => ({
     title: e.fields.app_libelle_etablissement,
     subtitle: e.fields.synthese_eval_sanit + `     (` + new Date(e.fields.date_inspection).toDateString() + `)`,
 	imageUrl: `https://maps.googleapis.com/maps/api/staticmap?zoom=12&size=400x400&scale=2&maptype=roadmap&key=`+ config.GOOGLE_API_KEY + `&center=`+ e.fields.geores,

@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "name": "pragmaticUI",
+  "appPath": "src/html/",
+  "dependencies": {
+    "jquery": "3.2.1",
+	"bootstrap": "3.3.7",
+	"bootstrap-sass": "3.3.7",
+    "fontawesome": "4.7.0",
+	"bootstrap-material-design": "0.5.10",
+	"theaterjs": "*"
+  },
+  "overrides": {
+    "bootstrap-sass": {
+      "main": [
+        "assets/stylesheets/_bootstrap.scss"
+      ]
+    }
+  },
+  "resolutions": {
+    "jquery": "3.2.1"
+  }
+}

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path  = require("path");
+const pluralize = require('pluralize');
 
 // -- Recast.ai
 const config = require('./config');
@@ -15,7 +16,7 @@ const port = config.PORT || 5000;
 app.set('port', port);
 app.use(bodyParser.json());
 
-var html_dir = './html/';
+const html_dir = './html/';
 app.use(express.static(path.join(__dirname, 'html')));
 
 app.post('/', function(req, res) {
@@ -25,8 +26,11 @@ app.post('/', function(req, res) {
 
 app.post('/discover', function(req, res) {
     console.log('[GET] /discover');
-	const param = req.body.conversation.memory['param'];
-    return api.discover(param.raw)
+	var location = req.body.conversation.memory['location'].raw;
+	var filter = req.body.conversation.memory['filter'].raw;
+	var rating = ''; //req.body.conversation.memory['rating'].raw;
+
+    return api.discover(location, getFilter(filter), rating)
       .then(function(content) {
         res.json({
           replies: content,
@@ -40,3 +44,26 @@ app.post('/discover', function(req, res) {
 app.listen(port, function() {
   console.log(`App is listening on port ${port}`);
 });
+
+
+function getFilter(filter) {	
+	
+	const filters = [
+	  { value: 'Restauration collective', name: 'Canteen' },
+	  { value: 'Restaurant', name: 'Restaurant' },
+	  { value: 'Alimentation générale', name: 'Grossery' },
+	  { value: 'Alimentation générale', name: 'Food Store' },
+	  { value: 'Traiteur', name: 'Caterer' },
+	  { value: 'Boucherie-Charcuterie', name: 'Butchery' },
+	  { value: 'Libre service', name: 'Self-service' }
+	];
+
+	var row = filters.find(function(elem) {
+		return elem.name.toLowerCase() === pluralize.singular(filter.toLowerCase());
+	});
+	  
+	if (row) {
+		return row.value;
+	}
+	return null;
+}
