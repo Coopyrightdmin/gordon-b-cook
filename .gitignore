@@ -8,3 +8,4 @@ yarn.lock
 ngrok.exe
 azure/**
 docker-compose.yml
+src/html/**
