@@ -1,4 +1,5 @@
 const axios = require('axios');
+const config = require('./config');
 
 function discover(param) {
   return apiCall(param).then(response =>
@@ -31,17 +32,25 @@ function apiResultToList(results) {
 
   const cards = results.slice(0,10).map(e => ({
     title: e.fields.app_libelle_etablissement,
-    subtitle: e.fields.synthese_eval_sanit
+    subtitle: e.fields.synthese_eval_sanit + `     (` + new Date(e.fields.date_inspection).toDateString() + `)`,
+	imageUrl: `https://maps.googleapis.com/maps/api/staticmap?zoom=12&size=400x400&scale=2&maptype=roadmap&key=`+ config.GOOGLE_API_KEY + `&center=`+ e.fields.geores,
+    buttons: [
+      {
+        type: 'web_url',
+        value: `https://www.societe.com/cgi-bin/search?champs=` + e.fields.siret,
+        title: 'View More',
+      },
+    ],
   }));
   return [
     {
       type: 'text',
-      content: "Here's what I found for you!",
+      content: "Here's what I found for you!"
     },
-    { type: 'list', content: { elements: cards }},
+    { type: 'list', content: { elements: cards, buttons: [] }},
   ];
 }
 
 module.exports = {
-  discover,
+  discover
 };

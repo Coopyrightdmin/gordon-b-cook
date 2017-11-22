@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const path  = require("path");
 
 // -- Recast.ai
-const config = require('./config')
-const recastai = require('recastai').default
-const client = new recastai(config.REQUEST_TOKEN)
-const api = require('./alim-confianceApi')
+const config = require('./config');
+const recastai = require('recastai').default;
+const client = new recastai(config.REQUEST_TOKEN);
+const api = require('./alim-confianceApi');
 
 // -- Express
 const app = express();
@@ -27,9 +27,9 @@ app.post('/discover', function(req, res) {
     console.log('[GET] /discover');
 	const param = req.body.conversation.memory['param'];
     return api.discover(param.raw)
-      .then(function(list) {
+      .then(function(content) {
         res.json({
-          replies: list,
+          replies: content,
         });
       })
       .catch(function(err) {
